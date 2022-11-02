@@ -1,0 +1,5 @@
+sonora==0.2.2
+protobuf<=3.20
+click
+cx_Freeze==6.13.1
+certifi
