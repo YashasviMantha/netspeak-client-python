@@ -89,7 +89,7 @@
                             <publisher>
                                 <contextUrl>https://repo.webis.de/artifactory/</contextUrl>
                                 <username>kipu5728</username>
-                                <password>AP7go5jjLqWw87JTDTZo34pGtZsBsmou5m4ZUB</password>
+                                <password><!--INSERT PASSWORD HERE--></password>
                                 <repoKey>libs-release-webis-gradle</repoKey>
                                 <snapshotRepoKey>libs-snapshot-webis-gradle</snapshotRepoKey>
                             </publisher>
