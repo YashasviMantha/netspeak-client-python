@@ -61,7 +61,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>NetspeakClient</mainClass>
+                            <mainClass>org.netspeak.NetspeakClient</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -89,7 +89,7 @@
                             <publisher>
                                 <contextUrl>https://repo.webis.de/artifactory/</contextUrl>
                                 <username>kipu5728</username>
-                                <password><!--INSERT PASSWORD HERE--></password>
+                                <password><!-- INSER PASSWORD HERE --></password>
                                 <repoKey>libs-release-webis-gradle</repoKey>
                                 <snapshotRepoKey>libs-snapshot-webis-gradle</snapshotRepoKey>
                             </publisher>

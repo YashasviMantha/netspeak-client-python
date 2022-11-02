@@ -1,5 +1,6 @@
+package org.netspeak;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.netspeak.SearchResults;
 
 import java.io.*;
 
