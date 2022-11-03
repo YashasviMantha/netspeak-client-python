@@ -34,12 +34,19 @@ public class NetspeakClient {
     private final ObjectMapper objectMapper;
 
     public NetspeakClient() throws IOException, ZipException {
-        Utils.downloadFile(PYTHON_IMAGE, "python-netspeak-client.zip");
-        Utils.unzipFile("python-netspeak-client.zip", ".");
+        File dir = new File("netspeak");
+        if(!dir.exists()){
+            if(!dir.mkdirs()){
+                throw new IOException("Can't create directory!");
+            };
+
+            Utils.downloadFile(PYTHON_IMAGE, "netspeak/python-netspeak-client.zip");
+            Utils.unzipFile("netspeak/python-netspeak-client.zip", "netspeak");
+        }
 
         netspeakProcess = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c",
-                "chmod +x build/exe.linux-x86_64-3.10/netspeak_search_wrapper && " +
-                        "build/exe.linux-x86_64-3.10/netspeak_search_wrapper -stdin"});
+                "chmod +x netspeak/build/exe.linux-x86_64-3.10/netspeak_search_wrapper && " +
+                        "netspeak/build/exe.linux-x86_64-3.10/netspeak_search_wrapper -stdin"});
 
 
         stdOut = new BufferedWriter(new OutputStreamWriter(netspeakProcess.getOutputStream()));
@@ -84,8 +91,6 @@ public class NetspeakClient {
         stdIn.close();
         stdErr.close();
         netspeakProcess.destroy();
-
-        Runtime.getRuntime().exec("rm -rf netspeak_search_wrapper");
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
