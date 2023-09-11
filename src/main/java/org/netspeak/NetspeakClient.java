@@ -2,43 +2,39 @@ package org.netspeak;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.lingala.zip4j.exception.ZipException;
-import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.ProtectionDomain;
-import java.util.Map;
 
 /**
+ * Netspeak client
+ *
  * @author marcel.gohsen@uni-weimar.de
  */
 public class NetspeakClient {
     private static final String PYTHON_IMAGE =
             "https://files.webis.de/data-in-production/data-research/netspeak/netspeak-client/py3.10-linux-x86_64.zip";
 
-    private Process netspeakProcess;
+    private final Process netspeakProcess;
 
-    private BufferedWriter stdOut;
-    private BufferedReader stdIn;
-    private BufferedReader stdErr;
+    private final BufferedWriter stdOut;
+    private final BufferedReader stdIn;
+    private final BufferedReader stdErr;
 
     private final ObjectMapper objectMapper;
 
+
+    /**
+     * Constructor that downloads the Netspeak client binary and executes it as subprocess.
+     *
+     * @throws IOException if project filesystems is ot writable
+     * @throws ZipException if binary can not be inflated
+     */
     public NetspeakClient() throws IOException, ZipException {
-        File dir = new File("netspeak");
+        final File dir = new File("netspeak");
         if(!dir.exists()){
             if(!dir.mkdirs()){
                 throw new IOException("Can't create directory!");
-            };
+            }
 
             Utils.downloadFile(PYTHON_IMAGE, "netspeak/python-netspeak-client.zip");
             Utils.unzipFile("netspeak/python-netspeak-client.zip", "netspeak");
@@ -55,6 +51,13 @@ public class NetspeakClient {
         objectMapper = new ObjectMapper();
     }
 
+    /**
+     * Submits a search query to the Netspeak API.
+     * @param query Search query (support Netspeak syntax)
+     * @return Search results
+     * @throws InterruptedException if subprocess crashes
+     * @throws IOException if an error occurred in the subprocess
+     */
     public SearchResults search(final String query) throws InterruptedException, IOException {
         try{
             stdOut.write(query);
@@ -62,7 +65,7 @@ public class NetspeakClient {
             stdOut.flush();
         } catch (IOException e){
             String line;
-            StringBuilder errStringBuilder = new StringBuilder();
+            final StringBuilder errStringBuilder = new StringBuilder();
             while ((line = stdErr.readLine()) != null){
                 errStringBuilder.append(line).append("\n");
             }
@@ -73,7 +76,7 @@ public class NetspeakClient {
 
         String line = stdIn.readLine();
         if (line == null){
-            StringBuilder errStringBuilder = new StringBuilder();
+            final StringBuilder errStringBuilder = new StringBuilder();
             while ((line = stdErr.readLine()) != null){
                 errStringBuilder.append(line).append("\n");
             }
@@ -84,6 +87,10 @@ public class NetspeakClient {
         return objectMapper.readValue(line, SearchResults.class);
     }
 
+    /***
+     * Ends the client subprocess.
+     * @throws IOException if closing of IO streams fail.
+     */
     public void close() throws IOException {
         stdOut.write("\\exit");
         stdOut.newLine();
@@ -93,16 +100,17 @@ public class NetspeakClient {
         netspeakProcess.destroy();
     }
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws IOException {
         NetspeakClient netspeakClient = null;
-        try{
+        try {
             netspeakClient = new NetspeakClient();
-            SearchResults searchResults = netspeakClient.search("this is ... test");
-            searchResults = netspeakClient.search("this ... test");
+            SearchResults searchResults = netspeakClient.search("how to ? this");
             searchResults.getPhrases().forEach(System.out::println);
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
+            searchResults = netspeakClient.search("see ... works");
+            searchResults.getPhrases().forEach(System.out::println);
+        } catch (Exception e) {
+            throw new RuntimeException("Oh no. Something went wrong :(", e);
+        } finally {
             if (netspeakClient != null) {
                 netspeakClient.close();
             }

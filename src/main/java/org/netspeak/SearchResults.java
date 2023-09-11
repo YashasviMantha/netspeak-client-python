@@ -1,32 +1,48 @@
 package org.netspeak;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.List;
 
 /**
  * @author marcel.gohsen@uni-weimar.de
  */
+@JsonSerialize
 public class SearchResults {
-    private List<Phrase> phrases;
+    private final List<Phrase> phrases;
+
+    public SearchResults() {
+        phrases = null;
+    }
+
+    public SearchResults(List<Phrase> phrases) {
+        this.phrases = phrases;
+    }
 
     public List<Phrase> getPhrases() {
         return phrases;
     }
 
-    public void setPhrases(List<Phrase> phrases) {
-        this.phrases = phrases;
-    }
-
+    @JsonSerialize
     public static class Phrase {
-        private long id;
-        private long frequency;
-        private List<String> words;
+        private final long id;
+        private final long frequency;
+        private final List<String> words;
+
+        public Phrase() {
+            id = 0L;
+            frequency = 0L;
+            words = null;
+        }
+
+        public Phrase(final long id, final long frequency, final List<String> words) {
+            this.id = id;
+            this.frequency = frequency;
+            this.words = words;
+        }
 
         public long getId() {
             return id;
-        }
-
-        public void setId(long id) {
-            this.id = id;
         }
 
         public long getFrequency() {
