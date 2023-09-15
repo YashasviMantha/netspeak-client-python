@@ -22,33 +22,45 @@ public class NetspeakClient {
 
     private final ObjectMapper objectMapper;
 
+    public NetspeakClient() {
+        this(new File("netspeak"));
+    }
 
     /**
      * Constructor that downloads the Netspeak client binary and executes it as subprocess.
      *
-     * @throws IOException if project filesystems is ot writable
-     * @throws ZipException if binary can not be inflated
      */
-    public NetspeakClient() throws IOException, ZipException {
-        final File dir = new File("netspeak");
+    public NetspeakClient(File dir) {
         if(!dir.exists()){
+            downloadNetspeakPythonClient(dir);
+        }
+
+        try {
+            netspeakProcess = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c",
+                dir.getAbsolutePath() + "/build/exe.linux-x86_64-3.10/netspeak_search_wrapper -stdin"});
+
+            stdOut = new BufferedWriter(new OutputStreamWriter(netspeakProcess.getOutputStream()));
+            stdIn = new BufferedReader(new InputStreamReader(netspeakProcess.getInputStream()));
+            stdErr = new BufferedReader(new InputStreamReader(netspeakProcess.getErrorStream()));
+            objectMapper = new ObjectMapper();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void downloadNetspeakPythonClient(File dir) {
+        try {
             if(!dir.mkdirs()){
                 throw new IOException("Can't create directory!");
             }
 
             Utils.downloadFile(PYTHON_IMAGE, "netspeak/python-netspeak-client.zip");
             Utils.unzipFile("netspeak/python-netspeak-client.zip", "netspeak");
+            Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c",
+                "chmod +x " + dir + "/build/exe.linux-x86_64-3.10/netspeak_search_wrapper"});
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        netspeakProcess = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c",
-                "chmod +x netspeak/build/exe.linux-x86_64-3.10/netspeak_search_wrapper && " +
-                        "netspeak/build/exe.linux-x86_64-3.10/netspeak_search_wrapper -stdin"});
-
-
-        stdOut = new BufferedWriter(new OutputStreamWriter(netspeakProcess.getOutputStream()));
-        stdIn = new BufferedReader(new InputStreamReader(netspeakProcess.getInputStream()));
-        stdErr = new BufferedReader(new InputStreamReader(netspeakProcess.getErrorStream()));
-        objectMapper = new ObjectMapper();
     }
 
     /**

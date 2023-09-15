@@ -1,0 +1,18 @@
+# docker build -t webis/netspeak:java-client-1.0-dev -f Dockerfile.dev .
+FROM ubuntu:22.04
+
+RUN apt-get update \
+	&& apt-get install -y python3 openjdk-18-jdk maven
+
+# Get this via wget from https://files.webis.de/data-in-production/data-research/netspeak/netspeak-client/py3.10-linux-x86_64.zip
+ADD netspeak-client /maven-dependencies/netspeak-client
+
+# Ensure that maven has all dependencies in the container
+# (I build the project twice to ensure it does not download dependencies in the second iteration)
+ADD pom.xml /tmp-delete-me/pom.xml
+
+RUN cd /tmp-delete-me \
+	&& mvn clean install \
+	&& mvn clean install \
+	&& rm -R /tmp-delete-me
+
