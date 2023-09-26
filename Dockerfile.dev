@@ -11,6 +11,8 @@ ADD netspeak-client /maven-dependencies/netspeak-client
 # (I build the project twice to ensure it does not download dependencies in the second iteration)
 ADD pom.xml /tmp-delete-me/pom.xml
 
+RUN apt-get install -y curl wget unzip tar gzip
+
 RUN cd /tmp-delete-me \
 	&& mvn clean install \
 	&& mvn clean install \
