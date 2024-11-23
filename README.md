@@ -2,7 +2,7 @@
 
 FULL CREDITS TO THE COOL FOLKS AT: https://github.com/netspeak/netspeak-client-java
 
-Netspeak already offers a Java Client [Java Client](https://github.com/netspeak/netspeak-client-java); But this Client is essentially a wrapper over a Python wrapper. 
+Netspeak already offers a [Java Client](https://github.com/netspeak/netspeak-client-java); But this Client is essentially a wrapper over a Python wrapper. 
 
 This repo is where I remove the Java stuff to use the python wrapper directly. Essentially just deleting the Java stuff. It was just eaiser to call a python function directly in my notebook over calling a java function which again calls a python function anyway. 
 
