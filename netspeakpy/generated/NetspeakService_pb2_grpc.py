@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import generated.NetspeakService_pb2 as NetspeakService__pb2
+import netspeakpy.generated.NetspeakService_pb2 as NetspeakService__pb2
 
 
 class NetspeakServiceStub(object):
