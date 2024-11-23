@@ -1,6 +1,6 @@
 # Netspeak Python Client
 
-FULL CREDITS TO THE COOLS FOLK AT: https://github.com/netspeak/netspeak-client-java
+FULL CREDITS TO THE COOL FOLKS AT: https://github.com/netspeak/netspeak-client-java
 
 Netspeak already offers a Java Client [Java Client](https://github.com/netspeak/netspeak-client-java); But this Client is essentially a wrapper over a Python wrapper. 
 
