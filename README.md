@@ -9,7 +9,6 @@ This repo is where I remove the Java stuff to use the python wrapper directly. E
 Please visit the netspeak guys for more information.
 
 
-```
 Output: 
 ```
 17792498317 |                how to use this | 1173949
