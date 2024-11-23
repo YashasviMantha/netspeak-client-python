@@ -23,7 +23,11 @@ def search_request(channel, query, n):
 
 def main(query, number_phrases):
     '''
-    
+    Search For query term's frequency using the netspeak API.
+
+    Args: 
+        query: str; Query to send to netspeak
+        number_phrases: int; Number of max phrases.
     '''
     if getattr(sys, "frozen", False):
         datadir = os.path.dirname(sys.executable)
@@ -35,4 +39,4 @@ def main(query, number_phrases):
         return search_request(channel, query, number_phrases)
 
 if __name__ == '__main__':
-    main()
+    main("this is a ?", 10)
