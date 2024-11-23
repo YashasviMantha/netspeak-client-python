@@ -1,71 +1,14 @@
-# Netspeak Java Client
+# Netspeak Python Client
 
-Java wrapper for the Python client of the [Netspeak](https://netspeak.org) API.
+FULL CREDITS TO THE COOLS FOLK AT: https://github.com/netspeak/netspeak-client-java
 
-## Getting started
+Netspeak already offers a Java Client [Java Client](https://github.com/netspeak/netspeak-client-java); But this Client is essentially a wrapper over a Python wrapper. 
 
-### Installation
+This repo is where I remove the Java stuff to use the python wrapper directly. Essentially just deleting the Java stuff. It was just eaiser to call a python function directly in my notebook over calling a java function which again calls a python function anyway. 
 
-Include the following dependency to your project with a Java build tool or as a jar. 
+Please visit the netspeak guys for more information.
 
-#### Maven
 
-Add this to your `pom.xml`:
-```xml
-<dependencies>
-    <dependency>
-        <groupId>org.netspeak</groupId>
-        <artifactId>netspeak-client</artifactId>
-        <version>1.0</version>
-    </dependency>
-</dependencies>
-
-<repositories>
-    <repository>
-        <id>central</id>
-        <name>repo.webis.de-releases</name>
-        <url>https://repo.webis.de/artifactory/libs-release-webis-gradle</url>
-    </repository>
-</repositories>
-```
-
-#### Gradle
-Add this to your ```build.gradle```:
-```
-allprojects {
-    dependencies {
-        implementation: 'org.netspeak:netspeak-client:1.0'
-    }
-}
-
-repositories {
-    maven {
-        url = uri('https://repo.webis.de/artifactory/libs-release-webis-gradle')
-    }
-}
-```
-
-### Example
-
-```java
-public class NetspeakExample {
-    public static void main(String[] args) throws IOException {
-        NetspeakClient netspeakClient = null;
-        try {
-            netspeakClient = new NetspeakClient();
-            SearchResults searchResults = netspeakClient.search("how to ? this");
-            searchResults.getPhrases().forEach(System.out::println);
-            searchResults = netspeakClient.search("see ... works");
-            searchResults.getPhrases().forEach(System.out::println);
-        } catch (Exception e) {
-            throw new RuntimeException("Oh no. Something went wrong :(", e);
-        } finally {
-            if (netspeakClient != null) {
-                netspeakClient.close();
-            }
-        }
-    }
-}
 ```
 Output: 
 ```
@@ -91,19 +34,4 @@ Output:
 17599975532 |       see how technorati works | 23345
 ```
 
-## Build from source
-
-### Requirements
-* Python 3.10 or newer
-* Virtualenv
-* Java 15 
-* Maven
-* Make
-
-### Commands
-
-```bash
-git clone git@github.com:netspeak/netspeak-client-java.git
-make build
-```
 

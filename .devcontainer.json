@@ -1,8 +1,0 @@
-{
-  "image": "webis/netspeak:java-client-1.0-dev",
-  "customizations": {
-    "vscode": {
-      "extensions": []
-    }
-  }
-}
